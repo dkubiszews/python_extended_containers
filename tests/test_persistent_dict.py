@@ -1,4 +1,8 @@
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import os
 import tempfile
 import unittest
 
@@ -34,8 +38,8 @@ class PersistentDictTests(unittest.TestCase):
         self.assertEqual(expected_item, sut[key])
 
     def test_initial_value_is_retrieved(self):
-        expected_dict = {"one": "1", "two": "2", "three": "3", "four": "4"}
-        sut = PersistentDict(self.storage_path, initial_value=expected_dict)
+        expected_dict = {"one": 1, "two": 2, "three": 3, "four": 4}
+        sut = PersistentDict(self.storage_path, initial_dict=expected_dict)
 
         actual_dict = {}
         for key, value in sut.items():
@@ -44,8 +48,8 @@ class PersistentDictTests(unittest.TestCase):
         self.assertDictEqual(expected_dict, actual_dict)
 
     def test_initial_value_keys_are_retrieved(self):
-        expected_dict = {"one": "1", "two": "2", "three": "3", "four": "4"}
-        sut = PersistentDict(self.storage_path, initial_value=expected_dict)
+        expected_dict = {"one": 1, "two": 2, "three": 3, "four": 4}
+        sut = PersistentDict(self.storage_path, initial_dict=expected_dict)
 
         actual_keys_set = set()
         for key in sut.keys():
@@ -54,8 +58,8 @@ class PersistentDictTests(unittest.TestCase):
         self.assertSetEqual(set(expected_dict.keys()), actual_keys_set)
 
     def test_initial_value_values_are_retrieved(self):
-        expected_dict = {"one": "1", "two": "2", "three": "3", "four": "4"}
-        sut = PersistentDict(self.storage_path, initial_value=expected_dict)
+        expected_dict = {"one": 1, "two": 2, "three": 3, "four": 4}
+        sut = PersistentDict(self.storage_path, initial_dict=expected_dict)
 
         actual_values_set = set()
         for value in sut.values():
@@ -64,11 +68,25 @@ class PersistentDictTests(unittest.TestCase):
         self.assertSetEqual(set(expected_dict.values()), actual_values_set)
 
     def test_initial_value_keys_are_retrieved_directly(self):
-        expected_dict = {"one": "1", "two": "2", "three": "3", "four": "4"}
-        sut = PersistentDict(self.storage_path, initial_value=expected_dict)
+        expected_dict = {"one": 1, "two": 2, "three": 3, "four": 4}
+        sut = PersistentDict(self.storage_path, initial_dict=expected_dict)
 
         actual_keys_set = set()
         for key in sut:
             actual_keys_set.add(key)
 
         self.assertSetEqual(set(expected_dict.keys()), actual_keys_set)
+
+    def test_remove_item(self):
+        initial_dict = {"one": 1, "two": 2, "three": 3, "four": 4}
+        item_to_remove = "three"
+        expected_dict = {"one": 1, "two": 2, "four": 4}
+        sut = PersistentDict(self.storage_path, initial_dict=initial_dict)
+
+        sut.pop(item_to_remove)
+
+        actual_values_set = set()
+        for value in sut.values():
+            actual_values_set.add(value)
+
+        self.assertSetEqual(set(expected_dict.values()), actual_values_set)
