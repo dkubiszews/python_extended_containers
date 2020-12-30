@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import unittest
 
 from extended_collections import FixedKeysDict
-from extended_collections.fixed_keys_dict import FixedKeysDictObject
+from extended_collections.fixed_keys_dict.fixed_keys_dict import FixedKeysDictObject
 
 
 class FixedKeysDictTests(unittest.TestCase):
